@@ -83,7 +83,13 @@ void placemole(int gamefield[][SIZE], IMAGES* images)
 
 
 bool HitMole(int gamefield[][SIZE], IMAGES* images, int row, int col, int& molesHit)
+{
+	int all = 0;
 
+	for (int i = 0; i < size);
+
+	while (true);
+}
 
 void initGamefield(int gamefield[][SIZE], IMAGES* images)
 {
