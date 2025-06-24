@@ -19,6 +19,12 @@ struct IMAGES
 	unsigned char* bomb;
 };
 
+struct BOMBE
+{
+	COORD coordinaten;
+	unsigned int time;
+};
+
 void readImages(IMAGES* images); // Bilder in den Speicher laden
 void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
@@ -36,6 +42,8 @@ void main()
 	int mouseY;
 	IMAGES images;
 	int molesHit = 0;
+	BOMBE bomben[10] = { 0 };
+
 	
 	window = initwindow(1024, 768, "Whack-A-Mole");
 	setcurrentwindow(window);
@@ -43,14 +51,11 @@ void main()
 
 	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
 
-	//showHitMoles(molesHit);
+	showHitMoles(molesHit);
 	
 	readImages(&images);
 
 	showImage(images.bomb, 0, 0);
-
-	_getch();
-
 
 	initGamefield(gamefield, &images);
 
@@ -162,16 +167,15 @@ void showImage(unsigned char* image, int row, int col)
 
 void readImages(IMAGES* images)
 {
-	/*readimagefile(".\\Images\\Hole.bmp", 100, 100, 200, 200);
+	readimagefile(".\\Images\\Hole.bmp", 100, 100, 200, 200);
 	images->hole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->hole);
 
 	readimagefile(".\\Images\\Mole.bmp", 100, 100, 200, 200);
 	images->mole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
-	getimage(100, 100, 200, 200, images->mole);*/
+	getimage(100, 100, 200, 200, images->mole);
 
 	readimagefile(".\\Images\\Bomb.bmp", 100, 100, 200, 200);
-	_getch();
 	images->bomb = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->bomb);
 
