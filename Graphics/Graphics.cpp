@@ -4,6 +4,11 @@
 
 #define SIZE		5
 #define TILE_SIZE	100
+#define OFFSETX		40
+#define OFFSETY     20
+
+#define MOLE	1
+#define EMPTY	0
 
 struct IMAGES
 {
@@ -15,7 +20,7 @@ struct IMAGES
 void readImages(IMAGES* images); // Bilder in den Speicher laden
 void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
-
+void placemole(int gamefield[][SIZE], IMAGES* images);
 
 void main()
 {
@@ -33,11 +38,22 @@ void main()
 	readImages(&images);
 	initGamefield(gamefield, &images);
 
-
+	placemole(gamefield, &images);
 
 
 	_getch();
 }
+
+
+void placemole(int gamefield[][SIZE], IMAGES* images)
+{
+	int randomX = rand() % SIZE;
+	int randomY = rand() % SIZE;
+
+	gamefield[randomY][randomX] = MOLE;
+	showImage(images->mole, randomY, randomX);
+}
+
 
 void initGamefield(int gamefield[][SIZE], IMAGES* images)
 {
@@ -45,6 +61,7 @@ void initGamefield(int gamefield[][SIZE], IMAGES* images)
 	{
 		for (int col = 0; col < SIZE; col++)
 		{
+			gamefield[row][col] = EMPTY;
 			showImage(images->hole, row, col);
 		}
 	}
@@ -53,20 +70,16 @@ void initGamefield(int gamefield[][SIZE], IMAGES* images)
 
 void showImage(unsigned char* image, int row, int col)
 {
-	putimage(col * TILE_SIZE, row * TILE_SIZE, image, COPY_PUT);
+	putimage(col * TILE_SIZE + OFFSETX, row * TILE_SIZE + OFFSETY, image, COPY_PUT);
 }
 
 void readImages(IMAGES* images)
 {
-	readimagefile(".\\Images\\Hole.bmp", 100, 100, 171, 171);
-	images->hole = (unsigned char*)malloc(imagesize(100, 100, 171, 171));
-	getimage(100, 100, 171, 171, images->hole);
+	readimagefile(".\\Images\\Hole.bmp", 100, 100, 200, 200);
+	images->hole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
+	getimage(100, 100, 200, 200, images->hole);
 
-	readimagefile(".\\Images\\Mole.bmp", 100, 100, 171, 171);
-	images->mole = (unsigned char*)malloc(imagesize(100, 100, 171, 171));
-	getimage(100, 100, 171, 171, images->mole);
-
-	readimagefile(".\\Images\\Hammer.bmp", 100, 100, 171, 171);
-	images->hammer = (unsigned char*)malloc(imagesize(100, 100, 171, 171));
-	getimage(100, 100, 171, 171, images->hammer);
+	readimagefile(".\\Images\\Mole.bmp", 100, 100, 200, 200);
+	images->mole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
+	getimage(100, 100, 200, 200, images->mole);
 }

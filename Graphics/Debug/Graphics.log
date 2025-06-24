@@ -1,4 +1,4 @@
 ﻿  Graphics.cpp
-C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Graphics\Graphics.cpp(21,1): warning C4326: Der Rückgabetyp von "main" sollte "int" und nicht "void" sein
-C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Graphics\Graphics.cpp(30,12): warning C4244: "Argument": Konvertierung von "time_t" in "unsigned int", möglicher Datenverlust
+C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Graphics\Graphics.cpp(26,1): warning C4326: Der Rückgabetyp von "main" sollte "int" und nicht "void" sein
+C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Graphics\Graphics.cpp(35,12): warning C4244: "Argument": Konvertierung von "time_t" in "unsigned int", möglicher Datenverlust
   Graphics.vcxproj -> C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Debug\Graphics.exe
