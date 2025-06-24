@@ -53,13 +53,14 @@ void main()
 			{
 				//Mausposition ist im Spielfeld
 
-				int col = mouseX / TILE_SIZE;
-				int row = mouseY / TILE_SIZE;
+				int col = (mouseX - OFFSETX) / TILE_SIZE;
+				int row = (mouseY - OFFSETY) / TILE_SIZE;
 
-				if (HitMole(gamefield, row, col))
+				if (HitMole(gamefield , row, col))
 				{
 					molesHit++;
 					showImage(images.hole, row, col);
+					placemole(gamefield, &images);
 				}
 			}
 		}
@@ -82,7 +83,7 @@ void placemole(int gamefield[][SIZE], IMAGES* images)
 
 
 
-bool HitMole(int gamefield[][SIZE] , int row, int col)
+bool HitMole(int gamefield[][SIZE], int row, int col)
 {
 	if (gamefield[row][col] == MOLE)
 	{
