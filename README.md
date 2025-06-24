@@ -36,5 +36,5 @@ Whack A Mole is a classic arcade-style game where players try to whack randomly 
 - Enjoy
 
 ## Contributors
-#JustACasualDay<br>
-#Steve6054
+# JustACasualDay<br>
+# Steve6054
