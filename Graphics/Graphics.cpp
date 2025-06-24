@@ -77,10 +77,10 @@ void main()
 
 void showHitMoles(int molesHit)
 {
-	char buffer[15];
+	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
-	bar(500, 100, 600, 50);
+	bar(500, 100, 600, 80);
 
 	sprintf(buffer, "Score: %d", molesHit);
 
