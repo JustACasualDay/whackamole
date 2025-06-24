@@ -1,9 +1,4 @@
 ﻿  Graphics.cpp
-C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Graphics\Graphics.cpp(20,1): warning C4326: Der Rückgabetyp von "main" sollte "int" und nicht "void" sein
-HTL_WinBGI.lib(dibutil.obj) : warning LNK4099: PDB "" wurde nicht mit "HTL_WinBGI.lib(dibutil.obj)" oder an "" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
-HTL_WinBGI.lib(drawing.obj) : warning LNK4099: PDB "" wurde nicht mit "HTL_WinBGI.lib(drawing.obj)" oder an "" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
-HTL_WinBGI.lib(file.obj) : warning LNK4099: PDB "" wurde nicht mit "HTL_WinBGI.lib(file.obj)" oder an "" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
-HTL_WinBGI.lib(misc.obj) : warning LNK4099: PDB "" wurde nicht mit "HTL_WinBGI.lib(misc.obj)" oder an "" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
-HTL_WinBGI.lib(winbgi.obj) : warning LNK4099: PDB "" wurde nicht mit "HTL_WinBGI.lib(winbgi.obj)" oder an "" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
-HTL_WinBGI.lib(winthread.obj) : warning LNK4099: PDB "" wurde nicht mit "HTL_WinBGI.lib(winthread.obj)" oder an "" gefunden; Objekt wird verknüpft, als ob keine Debuginformationen vorhanden wären.
+C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Graphics\Graphics.cpp(21,1): warning C4326: Der Rückgabetyp von "main" sollte "int" und nicht "void" sein
+C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Graphics\Graphics.cpp(30,12): warning C4244: "Argument": Konvertierung von "time_t" in "unsigned int", möglicher Datenverlust
   Graphics.vcxproj -> C:\Users\Samuel.Kaltenegger\Desktop\SEW\Studio\Schule\Projektwoche\WhackAMole\Debug\Graphics.exe
