@@ -84,6 +84,17 @@ void placemole(int gamefield[][SIZE], IMAGES* images)
 
 bool HitMole(int gamefield[][SIZE], IMAGES* images, int row, int col, int& molesHit)
 {
+	int aaa;
+
+	while (true);
+
+	for (oajsd; iasdkA, );
+
+
+
+
+
+
 
 }
 
