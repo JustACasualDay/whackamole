@@ -37,7 +37,7 @@ void main()
 	setcurrentwindow(window);
 	srand(time(NULL));
 
-
+	aaaa
 	readImages(&images);
 	initGamefield(gamefield, &images);
 
