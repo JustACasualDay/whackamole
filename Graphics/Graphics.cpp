@@ -20,7 +20,6 @@ void readImages(IMAGES* images); // Bilder in den Speicher laden
 void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
 bool HitMole(int gamefield[][SIZE], IMAGES* images, int row, int col, int& molesHit);
-
 void placemole(int gamefield[][SIZE], IMAGES* images);
 
 
@@ -53,13 +52,14 @@ void main()
 			{
 				//Mausposition ist im Spielfeld
 
-				int col = mouseX / TILE_SIZE;
-				int row = mouseY / TILE_SIZE;
+				int col = (mouseX - OFFSETX) / TILE_SIZE;
+				int row = (mouseY - OFFSETY) / TILE_SIZE;
 
 				if (HitMole(gamefield, &images, row, col, molesHit))
 				{
 					molesHit++;
 					showImage(images.hole, row, col);
+					placemole(gamefield, &images);
 				}
 			}
 		}
@@ -79,8 +79,6 @@ void placemole(int gamefield[][SIZE], IMAGES* images)
 	gamefield[randomY][randomX] = MOLE;
 	showImage(images->mole, randomY, randomX);
 }
-
-
 
 bool HitMole(int gamefield[][SIZE], IMAGES* images, int row, int col, int& molesHit)
 {
