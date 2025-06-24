@@ -80,13 +80,12 @@ void showHitMoles(int molesHit)
 	char buffer[15];
 
 	setfillstyle(SOLID_FILL, BLACK);
-	bar(700, 100, 800, 730);
+	bar(500, 100, 600, 50);
 
 	sprintf(buffer, "Score: %d", molesHit);
 
-	outtextxy(700, 100, buffer);
+	outtextxy(435, 50, buffer);
 }
-
 
 void placemole(int gamefield[][SIZE], IMAGES* images)
 {
@@ -96,8 +95,6 @@ void placemole(int gamefield[][SIZE], IMAGES* images)
 	gamefield[randomY][randomX] = MOLE;
 	showImage(images->mole, randomY, randomX);
 }
-
-
 
 bool HitMole(int gamefield[][SIZE], int row, int col)
 {
@@ -124,7 +121,6 @@ void initGamefield(int gamefield[][SIZE], IMAGES* images)
 		}
 	}
 }
-
 
 void showImage(unsigned char* image, int row, int col)
 {
