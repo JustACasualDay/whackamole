@@ -30,8 +30,8 @@ void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
 void showScore(int molesHit);
-void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col);
-void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col);
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[]);
+void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[]);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
 
 
@@ -79,7 +79,7 @@ void main()
 				{
 					molesHit++;
 					showImage(images.hole, row, col);
-					showHitMoles(molesHit);
+					showScore(molesHit);
 					placemole(gamefield, &images, row, col, bomben);
 				}
 				if (HitBomb(gamefield, row, col))
