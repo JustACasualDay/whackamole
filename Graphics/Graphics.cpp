@@ -60,7 +60,7 @@ void main()
 
 	initGamefield(gamefield, &images);
 
-	placemole(gamefield, &images, 0, 0);
+	placemole(gamefield, &images, 0, 0, bomben);
 	while (true)
 	{
 		if (ismouseclick(WM_LBUTTONDOWN))
@@ -80,7 +80,7 @@ void main()
 					molesHit++;
 					showImage(images.hole, row, col);
 					showHitMoles(molesHit);
-					placemole(gamefield, &images, row, col);
+					placemole(gamefield, &images, row, col, bomben);
 				}
 				if (HitBomb(gamefield, row, col))
 				{
@@ -110,7 +110,7 @@ bool HitBomb(int gamefield[][SIZE], int row, int col)
 	}
 }
 
-void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col)
+void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[])
 {
 	int randomX;
 	int randomY;
@@ -119,6 +119,7 @@ void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col)
 		randomX = rand() % SIZE;
 		randomY = rand() % SIZE;		
 	} while (randomX == col && randomY == row);
+
 
 
 	gamefield[randomY][randomX] = BOMB;
@@ -138,7 +139,7 @@ void showHitMoles(int molesHit)
 	outtextxy(435, 50, buffer);
 }
 
-void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col)
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[])
 {
 	int randomX;
 	int randomY;
@@ -153,7 +154,7 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col)
 	
 	if (randombomb == 5)
 	{
-		placebomb(gamefield, images, randomY, randomX);
+		placebomb(gamefield, images, randomY, randomX, bomben);
 	}
 
 	gamefield[randomY][randomX] = MOLE;
