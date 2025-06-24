@@ -19,7 +19,8 @@ struct IMAGES
 void readImages(IMAGES* images); // Bilder in den Speicher laden
 void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
-bool HitMole(int gamefield[][SIZE], int row, int col);
+bool HitMole(int gamefield[][SIZE] , int row, int col);
+void showHitMoles(int molesHit);
 void placemole(int gamefield[][SIZE], IMAGES* images);
 
 
@@ -36,6 +37,9 @@ void main()
 	setcurrentwindow(window);
 	srand(time(NULL));
 
+	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
+
+	showHitMoles(molesHit);
 	
 	readImages(&images);
 	initGamefield(gamefield, &images);
@@ -59,6 +63,7 @@ void main()
 				{
 					molesHit++;
 					showImage(images.hole, row, col);
+					showHitMoles(molesHit);
 					placemole(gamefield, &images);
 				}
 			}
@@ -68,6 +73,18 @@ void main()
 	}
 
 	_getch();
+}
+
+void showHitMoles(int molesHit)
+{
+	char buffer[15];
+
+	setfillstyle(SOLID_FILL, BLACK);
+	bar(700, 100, 800, 730);
+
+	sprintf(buffer, "Score: %d", molesHit);
+
+	outtextxy(700, 100, buffer);
 }
 
 
@@ -86,9 +103,14 @@ bool HitMole(int gamefield[][SIZE], int row, int col)
 {
 	if (gamefield[row][col] == MOLE)
 	{
+		gamefield[row][col] = EMPTY;
 		return true;
 	}
-	return false;
+	if (gamefield[row][col] == EMPTY)
+	{
+		return false;
+	}
+	
 }
 
 void initGamefield(int gamefield[][SIZE], IMAGES* images)
