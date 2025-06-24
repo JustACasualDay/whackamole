@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <conio.h>
+#include <time.h>
 #include "graphics.h"
 
 #define SIZE		5
@@ -7,6 +8,7 @@
 #define OFFSETX		250
 #define OFFSETY     100
 
+#define BOMB	-1
 #define MOLE	1
 #define EMPTY	0
 
@@ -14,6 +16,7 @@ struct IMAGES
 {
 	unsigned char* mole;
 	unsigned char* hole;
+	unsigned char* bomb;
 };
 
 void readImages(IMAGES* images); // Bilder in den Speicher laden
@@ -21,7 +24,8 @@ void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
 void showHitMoles(int molesHit);
-void placemole(int gamefield[][SIZE], IMAGES* images);
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col);
+void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col);
 
 
 void main()
@@ -44,7 +48,7 @@ void main()
 	readImages(&images);
 	initGamefield(gamefield, &images);
 
-	placemole(gamefield, &images);
+	placemole(gamefield, &images, 0, 0);
 	while (true)
 	{
 		if (ismouseclick(WM_LBUTTONDOWN))
@@ -64,7 +68,8 @@ void main()
 					molesHit++;
 					showImage(images.hole, row, col);
 					showHitMoles(molesHit);
-					placemole(gamefield, &images);
+					placemole(gamefield, &images, row, col);
+					placebomb(gamefield, &images, row, col);
 				}
 			}
 		}
@@ -75,9 +80,25 @@ void main()
 	_getch();
 }
 
+void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col)
+{
+	int randomX;
+	int randomY;
+
+	do {
+		randomX = rand() % SIZE;
+		randomY = rand() % SIZE;
+	} while (randomX == col && randomY == row);
+
+
+	gamefield[randomY][randomX] = BOMB;
+	showImage(images->bomb, randomY, randomX);
+
+}
+
 void showHitMoles(int molesHit)
 {
-	char buffer[15];
+	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
 	bar(500, 100, 600, 50);
@@ -87,13 +108,19 @@ void showHitMoles(int molesHit)
 	outtextxy(435, 50, buffer);
 }
 
-void placemole(int gamefield[][SIZE], IMAGES* images)
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col)
 {
-	int randomX = rand() % SIZE;
-	int randomY = rand() % SIZE;
+	int randomX;
+	int randomY;
+
+	do{
+		randomX = rand() % SIZE;
+		randomY = rand() % SIZE;
+	} while (randomX == col && randomY == row);
+	
 
 	gamefield[randomY][randomX] = MOLE;
-	showImage(images->mole, randomY, randomX);
+	showImage(images->bomb, randomY, randomX);
 }
 
 bool HitMole(int gamefield[][SIZE], int row, int col)
@@ -136,6 +163,10 @@ void readImages(IMAGES* images)
 	readimagefile(".\\Images\\Mole.bmp", 100, 100, 200, 200);
 	images->mole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->mole);
+
+	readimagefile(".\\Images\\Bomb.bmp", 100, 100, 200, 200);
+	images->bomb = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
+	getimage(100, 100, 200, 200, images->bomb);
 
 	bar(100, 100, 201, 201);
 }
