@@ -3,7 +3,7 @@
 #include "graphics.h"
 
 #define SIZE		3
-#define TILE_SIZE	70
+#define TILE_SIZE	200
 
 struct IMAGES
 {
@@ -57,14 +57,14 @@ void showImage(unsigned char* image, int row, int col)
 void readImages(IMAGES* images)
 {
 	readimagefile(".\\Images\\Hole.bmp", 100, 100, 171, 171);
-	images->hole = (unsigned char*)malloc(imagesize(100, 100, 171, 171));
+	images->hole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 171, 171, images->hole);
 
 	readimagefile(".\\Images\\Mole.bmp", 100, 100, 171, 171);
-	images->mole = (unsigned char*)malloc(imagesize(100, 100, 171, 171));
+	images->mole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 171, 171, images->mole);
 
 	readimagefile(".\\Images\\Hammer.bmp", 100, 100, 171, 171);
-	images->hammer = (unsigned char*)malloc(imagesize(100, 100, 171, 171));
+	images->hammer = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 171, 171, images->hammer);
 }

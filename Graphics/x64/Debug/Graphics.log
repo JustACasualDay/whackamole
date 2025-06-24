@@ -2,5 +2,6 @@
 Graphics.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol "setcurrentwindow" in Funktion "main".
 Graphics.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol "imagesize" in Funktion ""void __cdecl readImages(struct IMAGES *)" (?readImages@@YAXPEAUIMAGES@@@Z)".
 Graphics.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol "getimage" in Funktion ""void __cdecl readImages(struct IMAGES *)" (?readImages@@YAXPEAUIMAGES@@@Z)".
+Graphics.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol "putimage" in Funktion ""void __cdecl showImage(unsigned char *,int,int)" (?showImage@@YAXPEAEHH@Z)".
 Graphics.obj : error LNK2019: Verweis auf nicht aufgelöstes externes Symbol "readimagefile" in Funktion ""void __cdecl readImages(struct IMAGES *)" (?readImages@@YAXPEAUIMAGES@@@Z)".
-C:\Users\Stefan.Raab\Desktop\Projektwoche\WhackAMole\x64\Debug\Graphics.exe : fatal error LNK1120: 5 nicht aufgelöste Externe
+C:\Users\Stefan.Raab\Desktop\Projektwoche\WhackAMole\x64\Debug\Graphics.exe : fatal error LNK1120: 6 nicht aufgelöste Externe
