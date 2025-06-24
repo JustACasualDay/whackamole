@@ -30,10 +30,11 @@ Whack A Mole is a classic arcade-style game where players try to whack randomly 
 
 ## Installation & Running
 
-- Clone the repository:  
-  ```bash
-  git clone https://github.com/JustACasualDay/whackamole.git
-  ```
+
+- Download the Latest Release
+- Unzip
+- Enjoy
+
 ## Contributors
-JustACasualDay<br>
-Steve6054
+#JustACasualDay<br>
+#Steve6054
