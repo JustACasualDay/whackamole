@@ -50,7 +50,8 @@ void main()
 
 				if (HitMole(gamefield, &images, row, col, molesHit))
 				{
-					showImage(&images->hole, row, col);
+					molesHit++;
+					showImage(images.hole, row, col);
 				}
 			}
 		}
