@@ -4,8 +4,8 @@
 
 #define SIZE		5
 #define TILE_SIZE	100
-#define OFFSETX		40
-#define OFFSETY     20
+#define OFFSETX		250
+#define OFFSETY     100
 
 #define MOLE	1
 #define EMPTY	0
@@ -48,7 +48,7 @@ void main()
 			//Linke Maustaste			
 			getmouseclick(WM_LBUTTONDOWN, mouseX, mouseY);
 
-			if (mouseX >= 0 && mouseX <= SIZE * TILE_SIZE && mouseY >= 0 && mouseY <= SIZE * TILE_SIZE)
+			if (mouseX - OFFSETX >= 0 && mouseX - OFFSETX <= SIZE * TILE_SIZE && mouseY - OFFSETY >= 0 && mouseY - OFFSETY <= SIZE * TILE_SIZE)
 			{
 				//Mausposition ist im Spielfeld
 
