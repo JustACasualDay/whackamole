@@ -140,4 +140,6 @@ void readImages(IMAGES* images)
 	readimagefile(".\\Images\\Mole.bmp", 100, 100, 200, 200);
 	images->mole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->mole);
+
+	bar(100, 100, 201, 201);
 }
