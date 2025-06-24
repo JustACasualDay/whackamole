@@ -19,7 +19,7 @@ struct IMAGES
 void readImages(IMAGES* images); // Bilder in den Speicher laden
 void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
-bool HitMole(int gamefield[][SIZE], IMAGES* images, int row, int col);
+bool HitMole(int gamefield[][SIZE] , int row, int col);
 
 void placemole(int gamefield[][SIZE], IMAGES* images);
 
@@ -56,7 +56,7 @@ void main()
 				int col = mouseX / TILE_SIZE;
 				int row = mouseY / TILE_SIZE;
 
-				if (HitMole(gamefield, &images, row, col))
+				if (HitMole(gamefield, row, col))
 				{
 					molesHit++;
 					showImage(images.hole, row, col);
@@ -82,7 +82,7 @@ void placemole(int gamefield[][SIZE], IMAGES* images)
 
 
 
-bool HitMole(int gamefield[][SIZE], IMAGES* images, int row, int col)
+bool HitMole(int gamefield[][SIZE] , int row, int col)
 {
 	if (gamefield[row][col] == MOLE)
 	{
