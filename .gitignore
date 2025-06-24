@@ -1,4 +1,4 @@
 .vs/
-Debug/
+Debug/*
 x64/
 Graphics/Debug/
