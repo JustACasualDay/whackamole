@@ -26,6 +26,7 @@ bool HitMole(int gamefield[][SIZE] , int row, int col);
 void showHitMoles(int molesHit);
 void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col);
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col);
+bool HitBomb(int gamefield[][SIZE], int row, int col);
 
 
 void main()
@@ -69,7 +70,12 @@ void main()
 					showImage(images.hole, row, col);
 					showHitMoles(molesHit);
 					placemole(gamefield, &images, row, col);
-					placebomb(gamefield, &images, row, col);
+				}
+				if (HitBomb(gamefield, row, col))
+				{
+					molesHit -= 10;
+					showImage(images.hole, row, col);
+					showHitMoles(molesHit);
 				}
 			}
 		}
@@ -80,6 +86,19 @@ void main()
 	_getch();
 }
 
+bool HitBomb(int gamefield[][SIZE], int row, int col)
+{
+	if (gamefield[row][col] == BOMB)
+	{
+		gamefield[row][col] = EMPTY;
+		return true;
+	}
+	if (gamefield[row][col] == EMPTY || gamefield[row][col] == MOLE)
+	{
+		return false;
+	}
+}
+
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col)
 {
 	int randomX;
@@ -87,7 +106,7 @@ void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col)
 
 	do {
 		randomX = rand() % SIZE;
-		randomY = rand() % SIZE;
+		randomY = rand() % SIZE;		
 	} while (randomX == col && randomY == row);
 
 
@@ -112,12 +131,19 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col)
 {
 	int randomX;
 	int randomY;
+	int randombomb;
 
 	do{
 		randomX = rand() % SIZE;
 		randomY = rand() % SIZE;
+		randombomb = rand() % 10;
+
 	} while (randomX == col && randomY == row);
 	
+	if (randombomb == 5)
+	{
+		placebomb(gamefield, images, randomY, randomX);
+	}
 
 	gamefield[randomY][randomX] = MOLE;
 	showImage(images->mole, randomY, randomX);
@@ -130,7 +156,7 @@ bool HitMole(int gamefield[][SIZE], int row, int col)
 		gamefield[row][col] = EMPTY;
 		return true;
 	}
-	if (gamefield[row][col] == EMPTY)
+	if (gamefield[row][col] == EMPTY || gamefield[row][col] == BOMB)
 	{
 		return false;
 	}
