@@ -29,7 +29,7 @@ void readImages(IMAGES* images); // Bilder in den Speicher laden
 void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
-void showHitMoles(int molesHit);
+void showScore(int molesHit);
 void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col);
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
@@ -52,7 +52,7 @@ void main()
 
 	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
 
-	showHitMoles(molesHit);
+	showScore(molesHit);
 	
 	readImages(&images);
 
@@ -79,14 +79,14 @@ void main()
 				{
 					molesHit++;
 					showImage(images.hole, row, col);
-					showHitMoles(molesHit);
+					showScore(molesHit);
 					placemole(gamefield, &images, row, col);
 				}
 				if (HitBomb(gamefield, row, col))
 				{
 					molesHit -= 10;
 					showImage(images.hole, row, col);
-					showHitMoles(molesHit);
+					showScore(molesHit);
 				}
 			}
 		}
@@ -126,7 +126,7 @@ void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col)
 
 }
 
-void showHitMoles(int molesHit)
+void showScore(int molesHit)
 {
 	char buffer[30];
 
