@@ -120,7 +120,7 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col)
 	
 
 	gamefield[randomY][randomX] = MOLE;
-	showImage(images->bomb, randomY, randomX);
+	showImage(images->mole, randomY, randomX);
 }
 
 bool HitMole(int gamefield[][SIZE], int row, int col)
