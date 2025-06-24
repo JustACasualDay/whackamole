@@ -43,9 +43,15 @@ void main()
 
 	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
 
-	showHitMoles(molesHit);
+	//showHitMoles(molesHit);
 	
 	readImages(&images);
+
+	showImage(images.bomb, 0, 0);
+
+	_getch();
+
+
 	initGamefield(gamefield, &images);
 
 	placemole(gamefield, &images, 0, 0);
@@ -156,15 +162,16 @@ void showImage(unsigned char* image, int row, int col)
 
 void readImages(IMAGES* images)
 {
-	readimagefile(".\\Images\\Hole.bmp", 100, 100, 200, 200);
+	/*readimagefile(".\\Images\\Hole.bmp", 100, 100, 200, 200);
 	images->hole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->hole);
 
 	readimagefile(".\\Images\\Mole.bmp", 100, 100, 200, 200);
 	images->mole = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
-	getimage(100, 100, 200, 200, images->mole);
+	getimage(100, 100, 200, 200, images->mole);*/
 
 	readimagefile(".\\Images\\Bomb.bmp", 100, 100, 200, 200);
+	_getch();
 	images->bomb = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->bomb);
 
