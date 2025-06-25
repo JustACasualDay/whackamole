@@ -3,11 +3,14 @@
 #include <time.h>
 #include "graphics.h"
 
-#define SIZE		7
+#define WINDOW_WIDTH	1024
+#define WINDOW_HEIGHT	768
+
+#define SIZE		6
 #define MAX_BOMBS	10
 #define TILE_SIZE	100
-#define OFFSETX		(1024 - (SIZE * TILE_SIZE)) / 2
-#define OFFSETY     (768 - (SIZE * TILE_SIZE)) / 2
+#define OFFSETX		(WINDOW_WIDTH - (SIZE * TILE_SIZE)) / 2
+#define OFFSETY     (WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
 #define BOMBTIME	5 * 1000
 
 #define BOMB	-1
@@ -51,7 +54,7 @@ void main()
 	BOMBE bomben[MAX_BOMBS] = { 0 };
 
 	
-	window = initwindow(1024, 768, "Whack-A-Mole");
+	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
 	setcurrentwindow(window);
 	srand(time(NULL));
 
