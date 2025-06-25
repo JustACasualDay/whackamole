@@ -47,7 +47,7 @@ void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT b
 void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
-bool hitClock(int gamefield[][SIZE], int row, int col);
+bool HitClock(int gamefield[][SIZE], int row, int col);
 void ShowTime(unsigned int gametime);
 void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images);
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[]);
@@ -69,18 +69,13 @@ void main()
 	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
 	setcurrentwindow(window);
 	srand(time(NULL));
-
 	startingtime = clock() * 1000 / CLOCKS_PER_SEC;
 
-	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
-
-	//showScore(molesHit);
-	
 	readImages(&images);
-
-	showImage(images.bomb, 0, 0);
-
 	initGamefield(gamefield, &images);
+
+	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
+	showScore(molesHit);
 
 	placemole(gamefield, &images, 0, 0, bomben, &mole);
 	while (true)
@@ -108,12 +103,20 @@ void main()
 					showScore(molesHit);
 					placemole(gamefield, &images, row, col, bomben, &mole);
 				}
+
+				if (HitClock(gamefield, row, col))
+				{
+					
+					showImage(images.hole, row, col);
+				}
+				
 				if (HitBomb(gamefield, row, col))
 				{
 					molesHit -= 10;
 					showImage(images.hole, row, col);
 					showScore(molesHit);
 				}
+
 
 			}
 		}
@@ -124,11 +127,11 @@ void main()
 	_getch();
 }
 
-bool hitClock(int gamefield[][SIZE], int row, int col)
+bool HitClock(int gamefield[][SIZE], int row, int col)
 {
 	if (gamefield[row][col] == CLOCK)
 	{
-		gamefield[row][col] == EMPTY;
+		gamefield[row][col] = EMPTY;
 		return true;
 	}
 
@@ -140,7 +143,7 @@ void ShowTime(unsigned int gametime)
 	unsigned int currentTime = clock() * 1000 / CLOCKS_PER_SEC;
 	int displayTime;
 
-	displayTime = gametime - currentTime;
+	displayTime = currentTime - gametime;
 
 	if (displayTime < 0)
 	{
@@ -152,7 +155,7 @@ void ShowTime(unsigned int gametime)
 	setfillstyle(SOLID_FILL, BLACK);
 	bar(700, 20, 600, 80);
 
-	sprintf(buffer, "Time: %d", START_TIME - displayTime);
+	sprintf(buffer, "Time: %d", (START_TIME - displayTime) / 1000);
 
 	outtextxy(750, 50, buffer);
 }
