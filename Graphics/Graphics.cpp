@@ -3,6 +3,7 @@
 #include <time.h>
 #include "graphics.h"
 
+
 #define SIZE		5
 #define MAX_BOMBS	10
 #define TILE_SIZE	100
@@ -13,6 +14,7 @@
 #define BOMB	-1
 #define MOLE	1
 #define EMPTY	0
+
 
 struct IMAGES
 {
@@ -26,6 +28,7 @@ struct BOMBE
 	COORD coordinaten;
 	unsigned int time;
 };
+
 
 void readImages(IMAGES* images); // Bilder in den Speicher laden
 void showImage(unsigned char* image, int row, int col);
@@ -45,7 +48,7 @@ void main()
 	int mouseX;
 	int mouseY;
 	IMAGES images;
-	int molesHit = -1000;
+	int molesHit = 0;
 	BOMBE bomben[MAX_BOMBS] = { 0 };
 
 	
