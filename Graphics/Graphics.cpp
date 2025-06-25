@@ -146,9 +146,18 @@ void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col)
 	do {
 		randomX = rand() % SIZE;
 		randomY = rand() % SIZE;
-	} while (randomX == col && randomY == row);
 
-	gamefield[row][col] = CLOCK;
+		if (randomX != col && randomY != row)
+		{
+			if (gamefield[randomY][randomX] == EMPTY)
+			{
+				break;
+			}
+		}
+
+	} while (true);
+
+	gamefield[randomY][randomX] = CLOCK;
 	showImage(images->clock, randomY, randomX);
 }
 
