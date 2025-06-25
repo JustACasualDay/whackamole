@@ -14,6 +14,7 @@
 #define MOLE	1
 #define EMPTY	0
 
+
 struct IMAGES
 {
 	unsigned char* mole;
@@ -26,6 +27,7 @@ struct BOMBE
 	COORD coordinaten;
 	unsigned int time;
 };
+
 
 void readImages(IMAGES* images); // Bilder in den Speicher laden
 void showImage(unsigned char* image, int row, int col);
@@ -170,9 +172,9 @@ void showScore(int molesHit)
 	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
-	bar(350, 20, 600, 80);
+	bar(350, 20, 700, 80);
 
-	sprintf(buffer, "Score: %d", molesHit);
+	sprintf(buffer, "Score: %3d", molesHit);
 
 	outtextxy(435, 50, buffer);
 }
