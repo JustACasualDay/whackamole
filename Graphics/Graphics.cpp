@@ -116,13 +116,16 @@ void main()
 					showImage(images.hole, row, col);
 					showScore(molesHit);
 				}
-
-
 			}
 		}
 
 		Sleep(10);
 	}
+
+	setfillstyle(SOLID_FILL, BLACK);
+	bar(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	outtextxy(OFFSETX, OFFSETY, (char*)"Game Over!");
 
 	_getch();
 }
