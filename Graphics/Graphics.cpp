@@ -310,7 +310,7 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT b
 	}
 	if (randomclock == 5)
 	{
-		placeClock(gamefield, images, row, col);
+		placeClock(gamefield, images, randomY, randomX);
 	}
 
 	mole->coordinaten.X = randomX;
@@ -328,11 +328,8 @@ bool HitMole(int gamefield[][SIZE], int row, int col)
 		gamefield[row][col] = EMPTY;
 		return true;
 	}
-	if (gamefield[row][col] == EMPTY || gamefield[row][col] == BOMB)
-	{
-		return false;
-	}
 	
+	return false;
 }
 
 void initGamefield(int gamefield[][SIZE], IMAGES* images)
