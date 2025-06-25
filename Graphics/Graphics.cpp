@@ -4,9 +4,11 @@
 #include "graphics.h"
 
 #define SIZE		5
+#define MAX_BOMBS	10
 #define TILE_SIZE	100
 #define OFFSETX		250
 #define OFFSETY     100
+#define BOMBTIME	2 * 1000
 
 #define BOMB	-1
 #define MOLE	1
@@ -33,6 +35,7 @@ void showScore(int molesHit);
 void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[]);
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[]);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
+void bombtimer(int gamefield[][SIZE], BOMBE bomben[], IMAGES* images);
 
 
 void main()
@@ -43,7 +46,7 @@ void main()
 	int mouseY;
 	IMAGES images;
 	int molesHit = 0;
-	BOMBE bomben[10] = { 0 };
+	BOMBE bomben[MAX_BOMBS] = { 0 };
 
 	
 	window = initwindow(1024, 768, "Whack-A-Mole");
@@ -63,6 +66,8 @@ void main()
 	placemole(gamefield, &images, 0, 0, bomben);
 	while (true)
 	{
+		bombtimer(gamefield, bomben, &images);
+
 		if (ismouseclick(WM_LBUTTONDOWN))
 		{
 			//Linke Maustaste			
@@ -97,6 +102,30 @@ void main()
 	_getch();
 }
 
+void bombtimer(int gamefield[][SIZE], BOMBE bomben[], IMAGES* images)
+{
+	int row;
+	int col;
+	unsigned int currenttime = clock();
+
+	for (int i = 0; i < MAX_BOMBS; i++)
+	{
+		if (bomben[i].time != 0)
+		{
+			if (currenttime - bomben[i].time >= BOMBTIME)
+			{
+				bomben[i].time = 0;
+
+				row = bomben[i].coordinaten.Y;
+				col = bomben[i].coordinaten.X;
+
+				showImage(images->hole, row, col);
+				gamefield[row][col] = EMPTY;
+			}
+		}
+	}
+}
+
 bool HitBomb(int gamefield[][SIZE], int row, int col)
 {
 	if (gamefield[row][col] == BOMB)
@@ -120,10 +149,19 @@ void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bo
 		randomY = rand() % SIZE;		
 	} while (randomX == col && randomY == row);
 
+	for (int i = 0; i < MAX_BOMBS; i++)
+	{
+		if (bomben[i].time == 0)
+		{
+			bomben[i].coordinaten.X = randomX;
+			bomben[i].coordinaten.Y = randomY;
+			bomben[i].time = clock();
 
-
-	gamefield[randomY][randomX] = BOMB;
-	showImage(images->bomb, randomY, randomX);
+			gamefield[randomY][randomX] = BOMB;
+			showImage(images->bomb, randomY, randomX);
+			break;
+		}
+	}
 
 }
 
