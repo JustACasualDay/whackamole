@@ -9,13 +9,14 @@
 #define SIZE		6
 #define MAX_BOMBS	10
 #define MAX_CLOCKS	10
+#define MAX_MOLES	3
 #define TILE_SIZE	100
 #define OFFSETX		(WINDOW_WIDTH - (SIZE * TILE_SIZE)) / 2
 #define OFFSETY     (WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
-#define START_TIME	60
-#define MOLE_TIME	2
+#define START_TIME	5
+#define MOLE_TIME	1
 #define CLOCK_TIME	1
-#define BOMB_TIME	5 
+#define BOMB_TIME	3
 
 #define CLOCK		2
 #define MOLE		1
@@ -44,18 +45,23 @@ void readImages(IMAGES* images); // Bilder in den Speicher laden
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
 void showImage(unsigned char* image, int row, int col);
 void showScore(int molesHit);
-void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[], OBJEKT clocks[], OBJEKT* mole);
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[], OBJEKT clocks[], OBJEKT mole[]);
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[]);
 void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT clocks[]);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
 bool HitClock(int gamefield[][SIZE], int row, int col);
 void ShowTime(unsigned int startingtime, int& gametime);
-void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT* mole);
+void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT mole[]);
 
 void main()
 {
 	int window;
+	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
+	setcurrentwindow(window);
+
+	start:
+	
 	int gamefield[SIZE][SIZE];
 	int mouseX;
 	int mouseY;
@@ -67,8 +73,6 @@ void main()
 	unsigned int startingtime;
 	int gametime;
 
-	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
-	setcurrentwindow(window);
 	srand(time(NULL));
 	startingtime = clock() * 1000 / CLOCKS_PER_SEC;
 	gametime = START_TIME * 1000;
@@ -137,6 +141,7 @@ void main()
 
 	outtextxy(OFFSETX, 400, buffer);
 
+	goto start;
 	_getch();
 }
 void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT* mole)
