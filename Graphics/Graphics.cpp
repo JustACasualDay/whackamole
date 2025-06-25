@@ -134,7 +134,7 @@ void showScore(int molesHit)
 	setfillstyle(SOLID_FILL, BLACK);
 	bar(350, 20, 600, 80);
 
-	sprintf(buffer, "Score: %d", molesHit);
+	sprintf(buffer, "Score: %3d", molesHit);
 
 	outtextxy(435, 50, buffer);
 }
