@@ -15,11 +15,11 @@
 #define BOMBTIME	5 * 1000
 #define START_TIME	60 * 1000	
 
-#define BOMB		-1
-#define MOLE		1
 #define CLOCK		2
-#define CLOCKBOMB	-2
+#define MOLE		1
 #define EMPTY		0
+#define CLOCKBOMB	-2
+#define BOMB		-1
 
 
 struct IMAGES
@@ -39,18 +39,18 @@ struct OBJEKT
 
 
 void readImages(IMAGES* images); // Bilder in den Speicher laden
-void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
-bool HitMole(int gamefield[][SIZE] , int row, int col);
+void showImage(unsigned char* image, int row, int col);
 void showScore(int molesHit);
 void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[], OBJEKT* mole);
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[]);
+void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col);
+bool HitMole(int gamefield[][SIZE] , int row, int col);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
+bool hitClock(int gamefield[][SIZE], int row, int col);
+void ShowTime(unsigned int gametime);
 void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images);
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[]);
-void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col);
-void ShowTime(unsigned int gametime);
-void hitTimer(int gamefield[][SIZE], int row, int col);
 
 void main()
 {
@@ -70,7 +70,7 @@ void main()
 	setcurrentwindow(window);
 	srand(time(NULL));
 
-	startingtime = clock();
+	startingtime = clock() * 1000 / CLOCKS_PER_SEC;
 
 	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
 
@@ -114,6 +114,7 @@ void main()
 					showImage(images.hole, row, col);
 					showScore(molesHit);
 				}
+
 			}
 		}
 
@@ -123,10 +124,20 @@ void main()
 	_getch();
 }
 
+bool hitClock(int gamefield[][SIZE], int row, int col)
+{
+	if (gamefield[row][col] == CLOCK)
+	{
+		gamefield[row][col] == EMPTY;
+		return true;
+	}
+
+	return false;
+}
 
 void ShowTime(unsigned int gametime)
 {
-	unsigned int currentTime = clock();
+	unsigned int currentTime = clock() * 1000 / CLOCKS_PER_SEC;
 	int displayTime;
 
 	displayTime = gametime - currentTime;
@@ -148,7 +159,7 @@ void ShowTime(unsigned int gametime)
 
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[])
 {
-	unsigned int currenttime = clock();
+	unsigned int currenttime = clock() * 1000 / CLOCKS_PER_SEC;
 	int row;
 	int col;
 
@@ -164,7 +175,7 @@ void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bombe
 	}
 }
 
-void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col)
+void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col)
 {
 	int randomX;
 	int randomY;
@@ -191,7 +202,7 @@ void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images)
 {
 	int row;
 	int col;
-	unsigned int currenttime = clock();
+	unsigned int currenttime = clock() * 1000 / CLOCKS_PER_SEC;
 
 	for (int i = 0; i < MAX_BOMBS; i++)
 	{
@@ -218,10 +229,8 @@ bool HitBomb(int gamefield[][SIZE], int row, int col)
 		gamefield[row][col] = EMPTY;
 		return true;
 	}
-	if (gamefield[row][col] == EMPTY || gamefield[row][col] == MOLE)
-	{
-		return false;
-	}
+	
+	return false;
 }
 
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[])
@@ -240,7 +249,7 @@ void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT b
 		{
 			bomben[i].coordinaten.X = randomX;
 			bomben[i].coordinaten.Y = randomY;
-			bomben[i].time = clock();
+			bomben[i].time = clock() * 1000 / CLOCKS_PER_SEC;
 
 			gamefield[randomY][randomX] = BOMB;
 			showImage(images->bomb, randomY, randomX);
@@ -301,12 +310,12 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT b
 	}
 	if (randomclock == 5)
 	{
-		placeTimer(gamefield, images, row, col);
+		placeClock(gamefield, images, row, col);
 	}
 
 	mole->coordinaten.X = randomX;
 	mole->coordinaten.Y = randomY;
-	mole->time = clock();
+	mole->time = clock() * 1000 / CLOCKS_PER_SEC;
 
 	gamefield[randomY][randomX] = MOLE;
 	showImage(images->mole, randomY, randomX);
