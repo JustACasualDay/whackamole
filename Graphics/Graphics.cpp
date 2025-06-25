@@ -49,7 +49,8 @@ bool HitBomb(int gamefield[][SIZE], int row, int col);
 void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images);
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[]);
 void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col);
-
+void ShowTime(unsigned int gametime);
+void hitTimer(int gamefield[][SIZE], int row, int col);
 
 void main()
 {
@@ -61,6 +62,7 @@ void main()
 	int molesHit = 0;
 	OBJEKT bomben[MAX_BOMBS] = { 0 };
 	OBJEKT mole;
+	unsigned int startingtime;
 	
 
 	
@@ -68,9 +70,11 @@ void main()
 	setcurrentwindow(window);
 	srand(time(NULL));
 
+	startingtime = clock();
+
 	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
 
-	showScore(molesHit);
+	//showScore(molesHit);
 	
 	readImages(&images);
 
@@ -83,6 +87,7 @@ void main()
 	{
 		bombtimer(gamefield, bomben, &images);
 		moletimer(gamefield, &mole, &images, bomben);
+		ShowTime(startingtime);
 
 		if (ismouseclick(WM_LBUTTONDOWN))
 		{
@@ -119,6 +124,28 @@ void main()
 }
 
 
+void ShowTime(unsigned int gametime)
+{
+	unsigned int currentTime = clock();
+	int displayTime;
+
+	displayTime = gametime - currentTime;
+
+	if (displayTime < 0)
+	{
+		return;
+	}
+
+	char buffer[30];
+
+	setfillstyle(SOLID_FILL, BLACK);
+	bar(500, 20, 700, 60);
+
+	sprintf(buffer, "Time: %d", START_TIME - displayTime);
+
+	outtextxy(600, 50, buffer);
+}
+
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[])
 {
 	unsigned int currenttime = clock();
@@ -136,7 +163,6 @@ void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bombe
 		placemole(gamefield, images, row, col, bomben, mole);
 	}
 }
-
 
 void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col)
 {
@@ -233,7 +259,7 @@ void showScore(int molesHit)
 
 	sprintf(buffer, "Score: %3d", molesHit);
 
-	outtextxy(435, 50, buffer);
+	outtextxy(350, 50, buffer);
 }
 
 void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[], OBJEKT* mole)
