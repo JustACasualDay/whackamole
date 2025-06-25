@@ -79,7 +79,7 @@ void main()
 				{
 					molesHit++;
 					showImage(images.hole, row, col);
-					showHitMoles(molesHit);
+					showScore(molesHit);
 					placemole(gamefield, &images, row, col, bomben);
 				}
 				if (HitBomb(gamefield, row, col))
