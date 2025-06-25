@@ -45,7 +45,7 @@ void main()
 	int mouseX;
 	int mouseY;
 	IMAGES images;
-	int molesHit = 0;
+	int molesHit = -1000;
 	BOMBE bomben[MAX_BOMBS] = { 0 };
 
 	
@@ -170,7 +170,7 @@ void showScore(int molesHit)
 	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
-	bar(350, 20, 600, 80);
+	bar(350, 20, 700, 80);
 
 	sprintf(buffer, "Score: %3d", molesHit);
 
@@ -190,7 +190,7 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bo
 
 	} while (randomX == col && randomY == row);
 	
-	if (randombomb == 5)
+	if (randombomb  == 5)
 	{
 		placebomb(gamefield, images, randomY, randomX, bomben);
 	}
