@@ -11,6 +11,7 @@
 #define TILE_SIZE	100
 #define OFFSETX		(WINDOW_WIDTH - (SIZE * TILE_SIZE)) / 2
 #define OFFSETY     (WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
+#define MOLE_TIME	2 * 1000
 #define BOMBTIME	5 * 1000
 
 #define BOMB	-1
@@ -25,7 +26,7 @@ struct IMAGES
 	unsigned char* bomb;
 };
 
-struct BOMBE
+struct OBJEKT
 {
 	COORD coordinaten;
 	unsigned int time;
@@ -37,10 +38,11 @@ void showImage(unsigned char* image, int row, int col);
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
 void showScore(int molesHit);
-void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[]);
-void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[]);
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[], OBJEKT* mole);
+void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[]);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
-void bombtimer(int gamefield[][SIZE], BOMBE bomben[], IMAGES* images);
+void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images);
+void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[]);
 
 
 void main()
@@ -51,7 +53,9 @@ void main()
 	int mouseY;
 	IMAGES images;
 	int molesHit = 0;
-	BOMBE bomben[MAX_BOMBS] = { 0 };
+	OBJEKT bomben[MAX_BOMBS] = { 0 };
+	OBJEKT mole;
+	
 
 	
 	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
@@ -68,10 +72,11 @@ void main()
 
 	initGamefield(gamefield, &images);
 
-	placemole(gamefield, &images, 0, 0, bomben);
+	placemole(gamefield, &images, 0, 0, bomben, &mole);
 	while (true)
 	{
 		bombtimer(gamefield, bomben, &images);
+		moletimer(gamefield, &mole, &images, bomben);
 
 		if (ismouseclick(WM_LBUTTONDOWN))
 		{
@@ -90,7 +95,7 @@ void main()
 					molesHit++;
 					showImage(images.hole, row, col);
 					showScore(molesHit);
-					placemole(gamefield, &images, row, col, bomben);
+					placemole(gamefield, &images, row, col, bomben, &mole);
 				}
 				if (HitBomb(gamefield, row, col))
 				{
@@ -107,7 +112,26 @@ void main()
 	_getch();
 }
 
-void bombtimer(int gamefield[][SIZE], BOMBE bomben[], IMAGES* images)
+
+void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[])
+{
+	unsigned int currenttime = clock();
+	int row;
+	int col;
+
+	if (currenttime - mole->time > MOLE_TIME)
+	{
+		row = mole->coordinaten.Y;
+		col = mole->coordinaten.X;
+
+		showImage(images->hole, row, col);
+		gamefield[row][col] = EMPTY;
+
+		placemole(gamefield, images, row, col, bomben, mole);
+	}
+}
+
+void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images)
 {
 	int row;
 	int col;
@@ -144,7 +168,7 @@ bool HitBomb(int gamefield[][SIZE], int row, int col)
 	}
 }
 
-void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[])
+void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[])
 {
 	int randomX;
 	int randomY;
@@ -182,7 +206,7 @@ void showScore(int molesHit)
 	outtextxy(435, 50, buffer);
 }
 
-void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[])
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[], OBJEKT* mole)
 {
 	int randomX;
 	int randomY;
@@ -217,6 +241,10 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bo
 	{
 		placebomb(gamefield, images, randomY, randomX, bomben);
 	}
+
+	mole->coordinaten.X = randomX;
+	mole->coordinaten.Y = randomY;
+	mole->time = clock();
 
 	gamefield[randomY][randomX] = MOLE;
 	showImage(images->mole, randomY, randomX);
