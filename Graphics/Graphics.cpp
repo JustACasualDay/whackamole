@@ -13,7 +13,7 @@
 #define OFFSETY     (WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
 #define MOLE_TIME	2 * 1000
 #define BOMBTIME	5 * 1000
-#define START_TIME	60 * 1000	
+#define START_TIME	60
 
 #define CLOCK		2
 #define MOLE		1
@@ -48,7 +48,7 @@ void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
 bool HitClock(int gamefield[][SIZE], int row, int col);
-void ShowTime(unsigned int gametime);
+void ShowTime(unsigned int startingtime, unsigned int gametime);
 void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images);
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[]);
 
@@ -63,13 +63,13 @@ void main()
 	OBJEKT bomben[MAX_BOMBS] = { 0 };
 	OBJEKT mole;
 	unsigned int startingtime;
-	
+	unsigned int gametime;
 
-	
 	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
 	setcurrentwindow(window);
 	srand(time(NULL));
 	startingtime = clock() * 1000 / CLOCKS_PER_SEC;
+	gametime = START_TIME;
 
 	readImages(&images);
 	initGamefield(gamefield, &images);
@@ -80,9 +80,9 @@ void main()
 	placemole(gamefield, &images, 0, 0, bomben, &mole);
 	while (true)
 	{
+		ShowTime(startingtime, gametime);
 		bombtimer(gamefield, bomben, &images);
 		moletimer(gamefield, &mole, &images, bomben);
-		ShowTime(startingtime);
 
 		if (ismouseclick(WM_LBUTTONDOWN))
 		{
@@ -106,7 +106,7 @@ void main()
 
 				if (HitClock(gamefield, row, col))
 				{
-					
+					gametime += 10;
 					showImage(images.hole, row, col);
 				}
 				
@@ -138,7 +138,7 @@ bool HitClock(int gamefield[][SIZE], int row, int col)
 	return false;
 }
 
-void ShowTime(unsigned int gametime)
+void ShowTime(unsigned int startingtime, unsigned int gametime)
 {
 	unsigned int currentTime = clock() * 1000 / CLOCKS_PER_SEC;
 	int displayTime;
@@ -153,9 +153,9 @@ void ShowTime(unsigned int gametime)
 	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
-	bar(700, 20, 600, 80);
+	bar(650, 20, 900, 80);
 
-	sprintf(buffer, "Time: %d", (START_TIME - displayTime) / 1000);
+	sprintf(buffer, "Time: %d", ((gametime * 1000) - displayTime) / 1000);
 
 	outtextxy(750, 50, buffer);
 }
@@ -374,5 +374,6 @@ void readImages(IMAGES* images)
 	images->clockbomb = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->clockbomb);
 
+	setfillstyle(SOLID_FILL, BLACK);
 	bar(100, 100, 201, 201);
 }
