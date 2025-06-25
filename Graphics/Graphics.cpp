@@ -3,15 +3,17 @@
 #include <time.h>
 #include "graphics.h"
 
-#define SIZE		7
+#define SIZE		5
 #define MAX_BOMBS	10
 #define TILE_SIZE	100
 #define OFFSETX		(1024 - (SIZE * TILE_SIZE)) / 2
 #define OFFSETY     (768 - (SIZE * TILE_SIZE)) / 2
 #define BOMBTIME	5 * 1000
+#define START_TIME	60 * 1000	
 
 #define BOMB	-1
 #define MOLE	1
+#define TIMER	2
 #define EMPTY	0
 
 
@@ -20,6 +22,7 @@ struct IMAGES
 	unsigned char* mole;
 	unsigned char* hole;
 	unsigned char* bomb;
+	unsigned char* timer;
 };
 
 struct BOMBE
@@ -38,6 +41,7 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bo
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bomben[]);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
 void bombtimer(int gamefield[][SIZE], BOMBE bomben[], IMAGES* images);
+void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col);
 
 
 void main()
@@ -102,6 +106,20 @@ void main()
 	}
 
 	_getch();
+}
+
+void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col)
+{
+	int randomX;
+	int randomY;
+
+	do {
+		randomX = rand() % SIZE;
+		randomY = rand() % SIZE;
+	} while (randomX == col && randomY == row);
+
+	gamefield[row][col] = TIMER;
+	showImage(images->timer, randomY, randomX);
 }
 
 void bombtimer(int gamefield[][SIZE], BOMBE bomben[], IMAGES* images)
@@ -184,12 +202,14 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bo
 	int randomX;
 	int randomY;
 	int randombomb;
+	int randomtimer;
 	bool flag = true;
 
 	do{
 		randomX = rand() % SIZE;
 		randomY = rand() % SIZE;
 		randombomb = rand() % 6;
+		randomtimer = rand() % 10;
 
 		if (randomX != col && randomY != row)
 		{
@@ -213,6 +233,10 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bo
 	if (randombomb == 3)
 	{
 		placebomb(gamefield, images, randomY, randomX, bomben);
+	}
+	if (randomtimer == 5)
+	{
+		placeTimer(gamefield, images, row, col);
 	}
 
 	gamefield[randomY][randomX] = MOLE;
@@ -263,6 +287,10 @@ void readImages(IMAGES* images)
 	readimagefile(".\\Images\\Bomb.bmp", 100, 100, 200, 200);
 	images->bomb = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->bomb);
+
+	readimagefile(".\\Images\\Timer.bmp", 100, 100, 200, 200);
+	images->timer = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
+	getimage(100, 100, 200, 200, images->timer);
 
 	bar(100, 100, 201, 201);
 }
