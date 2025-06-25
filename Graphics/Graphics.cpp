@@ -48,7 +48,7 @@ void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
 bool HitClock(int gamefield[][SIZE], int row, int col);
-void ShowTime(unsigned int startingtime, unsigned int gametime);
+void ShowTime(unsigned int startingtime, int& gametime);
 void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images);
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[]);
 
@@ -63,13 +63,13 @@ void main()
 	OBJEKT bomben[MAX_BOMBS] = { 0 };
 	OBJEKT mole;
 	unsigned int startingtime;
-	unsigned int gametime;
+	int gametime;
 
 	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
 	setcurrentwindow(window);
 	srand(time(NULL));
 	startingtime = clock() * 1000 / CLOCKS_PER_SEC;
-	gametime = START_TIME;
+	gametime = START_TIME * 1000;
 
 	readImages(&images);
 	initGamefield(gamefield, &images);
@@ -106,7 +106,7 @@ void main()
 
 				if (HitClock(gamefield, row, col))
 				{
-					gametime += 10;
+					gametime += 10 * 1000;
 					showImage(images.hole, row, col);
 				}
 				
@@ -124,6 +124,8 @@ void main()
 		Sleep(10);
 	}
 
+
+	
 	_getch();
 }
 
@@ -138,24 +140,34 @@ bool HitClock(int gamefield[][SIZE], int row, int col)
 	return false;
 }
 
-void ShowTime(unsigned int startingtime, unsigned int gametime)
+void ShowTime(unsigned int startingtime, int& gametime)
 {
+	static unsigned int lastUpdate = 0;
 	unsigned int currentTime = clock() * 1000 / CLOCKS_PER_SEC;
-	int displayTime;
 
-	displayTime = currentTime - gametime;
-
-	if (displayTime < 0)
+	if (lastUpdate == 0)
 	{
-		return;
+		lastUpdate = currentTime;
 	}
+
+	int delta = currentTime - lastUpdate;
+	lastUpdate = currentTime;
+
+	gametime -= delta;
+
+
+	if (gametime < 0)
+	{
+		gametime = 0;
+	}
+
 
 	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
 	bar(600, 20, 900, 80);
 
-	sprintf(buffer, "Time: %d", ((gametime * 1000) - displayTime) / 1000);
+	sprintf(buffer, "Time: %d", gametime / 1000);
 
 	outtextxy(650, 30, buffer);
 }
