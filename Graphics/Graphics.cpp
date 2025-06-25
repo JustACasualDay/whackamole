@@ -3,12 +3,12 @@
 #include <time.h>
 #include "graphics.h"
 
-#define SIZE		5
+#define SIZE		7
 #define MAX_BOMBS	10
 #define TILE_SIZE	100
-#define OFFSETX		250
-#define OFFSETY     100
-#define BOMBTIME	2 * 1000
+#define OFFSETX		(1024 - (SIZE * TILE_SIZE)) / 2
+#define OFFSETY     (768 - (SIZE * TILE_SIZE)) / 2
+#define BOMBTIME	5 * 1000
 
 #define BOMB	-1
 #define MOLE	1
@@ -182,15 +182,33 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, BOMBE bo
 	int randomX;
 	int randomY;
 	int randombomb;
+	bool flag = true;
 
 	do{
 		randomX = rand() % SIZE;
 		randomY = rand() % SIZE;
-		randombomb = rand() % 10;
+		randombomb = rand() % 6;
 
-	} while (randomX == col && randomY == row);
+		if (randomX != col && randomY != row)
+		{
+			for (int i = 0; i < MAX_BOMBS; i++)
+			{
+				flag = false;
+
+				if (bomben[i].time != 0)
+				{
+					if (bomben[i].coordinaten.X == randomX && bomben[i].coordinaten.Y == randomY)
+					{
+						flag = true;
+						break;
+					}
+				}
+			}
+		}
+
+	} while (flag);
 	
-	if (randombomb == 5)
+	if (randombomb == 3)
 	{
 		placebomb(gamefield, images, randomY, randomX, bomben);
 	}
