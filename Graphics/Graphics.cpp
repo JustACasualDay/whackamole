@@ -153,11 +153,11 @@ void ShowTime(unsigned int startingtime, unsigned int gametime)
 	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
-	bar(650, 20, 900, 80);
+	bar(600, 20, 900, 80);
 
 	sprintf(buffer, "Time: %d", ((gametime * 1000) - displayTime) / 1000);
 
-	outtextxy(750, 50, buffer);
+	outtextxy(650, 30, buffer);
 }
 
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[])
@@ -267,11 +267,11 @@ void showScore(int molesHit)
 	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
-	bar(100, 80, 200, 20);
+	bar(OFFSETX, 30, 600, 80);
 
-	sprintf(buffer, "Score: %3d", molesHit);
+	sprintf(buffer, "Score: %4d", molesHit);
 
-	outtextxy(250, 50, buffer);
+	outtextxy(OFFSETX, 30, buffer);
 }
 
 void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bomben[], OBJEKT* mole)
