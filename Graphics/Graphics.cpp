@@ -78,7 +78,7 @@ void main()
 	showScore(molesHit);
 
 	placemole(gamefield, &images, 0, 0, bomben, &mole);
-	while (true)
+	while (gametime > 0)
 	{
 		ShowTime(startingtime, gametime);
 		bombtimer(gamefield, bomben, &images);
