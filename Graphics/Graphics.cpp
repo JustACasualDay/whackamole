@@ -150,7 +150,7 @@ void ShowTime(unsigned int gametime)
 	char buffer[30];
 
 	setfillstyle(SOLID_FILL, BLACK);
-	bar(700, 20, 600, 80);
+	bar(700, 20, 750, 80);
 
 	sprintf(buffer, "Time: %d", START_TIME - displayTime);
 
@@ -263,10 +263,10 @@ void showScore(int molesHit)
 {
 	char buffer[30];
 
-	setfillstyle(SOLID_FILL, BLACK);
-	bar(100, 80, 200, 20);
+	setfillstyle(SOLID_FILL, WHITE);
+	bar(250, 50, 650, 80);
 
-	sprintf(buffer, "Score: %3d", molesHit);
+	sprintf(buffer, "Score: %4d", molesHit);
 
 	outtextxy(250, 50, buffer);
 }
