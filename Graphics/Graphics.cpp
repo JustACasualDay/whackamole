@@ -13,10 +13,13 @@
 #define OFFSETY     (WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
 #define MOLE_TIME	2 * 1000
 #define BOMBTIME	5 * 1000
+#define START_TIME	60 * 1000	
 
-#define BOMB	-1
-#define MOLE	1
-#define EMPTY	0
+#define BOMB		-1
+#define MOLE		1
+#define CLOCK		2
+#define CLOCKBOMB	-2
+#define EMPTY		0
 
 
 struct IMAGES
@@ -24,6 +27,8 @@ struct IMAGES
 	unsigned char* mole;
 	unsigned char* hole;
 	unsigned char* bomb;
+	unsigned char* clock;
+	unsigned char* clockbomb;
 };
 
 struct OBJEKT
@@ -43,6 +48,7 @@ void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT b
 bool HitBomb(int gamefield[][SIZE], int row, int col);
 void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images);
 void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bomben[]);
+void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col);
 
 
 void main()
@@ -131,6 +137,21 @@ void moletimer(int gamefield[][SIZE], OBJEKT* mole, IMAGES* images, OBJEKT bombe
 	}
 }
 
+
+void placeTimer(int gamefield[][SIZE], IMAGES* images, int row, int col)
+{
+	int randomX;
+	int randomY;
+
+	do {
+		randomX = rand() % SIZE;
+		randomY = rand() % SIZE;
+	} while (randomX == col && randomY == row);
+
+	gamefield[row][col] = CLOCK;
+	showImage(images->clock, randomY, randomX);
+}
+
 void bombtimer(int gamefield[][SIZE], OBJEKT bomben[], IMAGES* images)
 {
 	int row;
@@ -211,12 +232,14 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT b
 	int randomX;
 	int randomY;
 	int randombomb;
+	int randomclock;
 	bool flag = true;
 
 	do{
 		randomX = rand() % SIZE;
 		randomY = rand() % SIZE;
 		randombomb = rand() % 6;
+		randomclock = rand() % 10;
 
 		if (randomX != col && randomY != row)
 		{
@@ -240,6 +263,10 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT b
 	if (randombomb == 3)
 	{
 		placebomb(gamefield, images, randomY, randomX, bomben);
+	}
+	if (randomclock == 5)
+	{
+		placeTimer(gamefield, images, row, col);
 	}
 
 	mole->coordinaten.X = randomX;
@@ -294,6 +321,14 @@ void readImages(IMAGES* images)
 	readimagefile(".\\Images\\Bomb.bmp", 100, 100, 200, 200);
 	images->bomb = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->bomb);
+
+	readimagefile(".\\Images\\Timer.bmp", 100, 100, 200, 200);
+	images->clock = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
+	getimage(100, 100, 200, 200, images->clock);
+
+	readimagefile(".\\Images\\TimerBomb.bmp", 100, 100, 200, 200);
+	images->clockbomb = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
+	getimage(100, 100, 200, 200, images->clockbomb);
 
 	bar(100, 100, 201, 201);
 }
