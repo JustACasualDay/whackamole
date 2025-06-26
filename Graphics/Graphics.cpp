@@ -433,7 +433,7 @@ void placeClockBomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJ
 			break;
 		}
 	}
-
+}
 
 bool HitClockBomb(int gamefield[][SIZE], int row, int col)
 {
