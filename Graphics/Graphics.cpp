@@ -13,7 +13,7 @@
 #define TILE_SIZE	100
 #define OFFSETX		(WINDOW_WIDTH - (SIZE * TILE_SIZE)) / 2
 #define OFFSETY     (WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
-#define START_TIME	5
+#define START_TIME	10
 #define MOLE_TIME	1
 #define CLOCK_TIME	1
 #define BOMB_TIME	3
@@ -32,6 +32,7 @@ struct IMAGES
 	unsigned char* bomb;
 	unsigned char* clock;
 	unsigned char* clockbomb;
+	unsigned char* restartbtn;
 };
 
 struct OBJEKT
@@ -53,6 +54,7 @@ bool HitBomb(int gamefield[][SIZE], int row, int col);
 bool HitClock(int gamefield[][SIZE], int row, int col);
 void ShowTime(unsigned int startingtime, int& gametime);
 void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT mole[]);
+bool restart(int molesHit, unsigned char* image);
 
 void main()
 {
@@ -127,10 +129,22 @@ void main()
 		Sleep(10);
 	}
 
+	
+
+	if (restart(molesHit, images.restartbtn))
+	{
+		goto start;
+	}
+
+	_getch();
+}
+
+bool restart(int molesHit, unsigned char* image)
+{
 	setfillstyle(SOLID_FILL, BLACK);
 	bar(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	outtextxy(OFFSETX*2, OFFSETY*2, (char*)"Game Over!");
+	outtextxy(OFFSETX * 2, OFFSETY * 2, (char*)"Game Over!");
 
 	char buffer[30];
 
@@ -141,9 +155,27 @@ void main()
 
 	outtextxy(OFFSETX, 400, buffer);
 
-	goto start;
-	_getch();
+	putimage( 650, 365, image, COPY_PUT);
+
+	int mouseX;
+	int mouseY;
+
+	while (true)
+	{
+		if (ismouseclick(WM_LBUTTONDOWN))
+		{
+			//Linke Maustaste			
+			getmouseclick(WM_LBUTTONDOWN, mouseX, mouseY);
+
+			if (mouseX >= 650 && mouseX <= 850 && mouseY >= 365 && mouseY <= 565)
+			{
+				return true;
+			}
+		}
+	}
+
 }
+
 void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT* mole)
 {
 	unsigned int currenttime = clock() * 1000 / CLOCKS_PER_SEC;
@@ -199,7 +231,6 @@ void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT 
 		}
 	}
 }
-
 
 void ShowTime(unsigned int startingtime, int& gametime)
 {
@@ -339,7 +370,7 @@ bool HitMole(int gamefield[][SIZE], int row, int col)
 	return false;
 }
 
-void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[], OBJEKT clocks[], OBJEKT* mole)
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[], OBJEKT clocks[], OBJEKT mole[])
 {
 	int randomX;
 	int randomY;
@@ -427,6 +458,10 @@ void readImages(IMAGES* images)
 	readimagefile(".\\Images\\TimerBomb.bmp", 100, 100, 200, 200);
 	images->clockbomb = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
 	getimage(100, 100, 200, 200, images->clockbomb);
+
+	readimagefile(".\\Images\\Restart.bmp", 100, 100, 200, 200);
+	images->restartbtn = (unsigned char*)malloc(imagesize(100, 100, 200, 200));
+	getimage(100, 100, 200, 200, images->restartbtn);
 
 	setfillstyle(SOLID_FILL, BLACK);
 	bar(100, 100, 201, 201);
