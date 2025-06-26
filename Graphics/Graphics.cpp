@@ -82,7 +82,7 @@ void main()
 	int mouseX;
 	int mouseY;
 	IMAGES images;
-	int Score = 0;
+	int Score;
 	OBJEKT bombs[MAX_BOMBS];
 	OBJEKT clocks[MAX_CLOCKS];
 	OBJEKT moles[MAX_MOLES];
@@ -101,7 +101,7 @@ void main()
 	cooldowntimer = clock() * 1000 / CLOCKS_PER_SEC;
 	lastUpdate = clock() * 1000 / CLOCKS_PER_SEC; // for displaying the time
 	gametime = START_TIME * 1000;
-
+	Score = 0;
 	
 	initGamefield(gamefield, &images, bombs, clocks, moles, clockbombs);
 
