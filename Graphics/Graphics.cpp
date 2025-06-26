@@ -53,7 +53,7 @@ bool HitMole(int gamefield[][SIZE] , int row, int col);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
 bool HitClock(int gamefield[][SIZE], int row, int col);
 void ShowTime(unsigned int startingtime, int& gametime);
-void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT mole[]);
+void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT* moles);
 bool restart(int molesHit, unsigned char* image);
 
 void main()
@@ -178,7 +178,7 @@ bool restart(int molesHit, unsigned char* image)
 
 }
 
-void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT* mole)
+void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT* moles)
 {
 	unsigned int currenttime = clock() * 1000 / CLOCKS_PER_SEC;
 	int row;
@@ -404,7 +404,7 @@ bool HitMole(int gamefield[][SIZE], int row, int col)
 	return false;
 }
 
-void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[], OBJEKT clocks[], OBJEKT mole[])
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[], OBJEKT clocks[], OBJEKT moles[])
 {
 	int randomX;
 	int randomY;
