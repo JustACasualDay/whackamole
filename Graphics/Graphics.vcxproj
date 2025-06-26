@@ -24,6 +24,14 @@
   <ItemGroup>
     <ClInclude Include="graphics.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\Bomb.bmp" />
+    <Image Include="Images\Hole.bmp" />
+    <Image Include="Images\Mole.bmp" />
+    <Image Include="Images\Restart.bmp" />
+    <Image Include="Images\Timer.bmp" />
+    <Image Include="Images\TimerBomb.bmp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

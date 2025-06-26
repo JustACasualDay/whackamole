@@ -24,4 +24,24 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\Bomb.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="Images\Hole.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="Images\Mole.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="Images\Restart.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="Images\Timer.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+    <Image Include="Images\TimerBomb.bmp">
+      <Filter>Ressourcendateien</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
