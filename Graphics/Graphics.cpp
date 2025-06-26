@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <time.h>
 #include "graphics.h"
+#include <memory.h>
 
 #define WINDOW_WIDTH	1024
 #define WINDOW_HEIGHT	768
@@ -14,7 +15,7 @@
 #define TILE_SIZE		100
 #define OFFSETX			(WINDOW_WIDTH - (SIZE * TILE_SIZE)) / 2
 #define OFFSETY			(WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
-#define START_TIME		60
+#define START_TIME		10
 #define MOLE_TIME		1
 #define CLOCK_TIME		1
 #define BOMB_TIME		3
@@ -46,7 +47,7 @@ struct OBJEKT
 
 
 void readImages(IMAGES* images); // Bilder in den Speicher laden
-void initGamefield(int gamefield[][SIZE], IMAGES* images);
+void initGamefield(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT moles[], OBJEKT clockbombs[]);
 void showImage(unsigned char* image, int row, int col);
 void showScore(int molesHit);
 bool checkAvailable(int row, int col, OBJEKT moles[], OBJEKT clocks[], OBJEKT bombs[], OBJEKT clockbombs[]);
@@ -58,7 +59,8 @@ bool HitMole(int gamefield[][SIZE] , int row, int col);
 bool HitBomb(int gamefield[][SIZE], int row, int col);
 bool HitClock(int gamefield[][SIZE], int row, int col);
 bool HitClockBomb(int gamefield[][SIZE], int row, int col);
-void ShowTime(unsigned int startingtime, int& gametime);
+void ShowTime(unsigned int startingtime, int& gametime, unsigned int& lastUpdate);
+bool HitClockBomb(int gamefield[][SIZE], int row, int col);
 void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT moles[], OBJEKT clockbombs[], unsigned int& cooldowntimer);
 bool restart(int molesHit, unsigned char* image);
 
@@ -68,31 +70,35 @@ void main()
 	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
 	setcurrentwindow(window);
 
-	start:
-	
 	int gamefield[SIZE][SIZE];
 	int mouseX;
 	int mouseY;
 	IMAGES images;
-	int molesHit = 0;
-	OBJEKT bombs[MAX_BOMBS] = { 0 };
-	OBJEKT clocks[MAX_CLOCKS] = { 0 };
-	OBJEKT moles[MAX_MOLES] = { 0 };
-	OBJEKT clockbombs[MAX_CLOCKBOMBS] = { 0 };
+	int Score = 0;
+	OBJEKT bombs[MAX_BOMBS];
+	OBJEKT clocks[MAX_CLOCKS];
+	OBJEKT moles[MAX_MOLES];
+	OBJEKT clockbombs[MAX_CLOCKBOMBS];
 	unsigned int startingtime;
 	int gametime;
 	unsigned int cooldowntimer;
+	unsigned int lastUpdate;
 
 	srand(time(NULL));
+	readImages(&images);
+	
+	start:
+
 	startingtime = clock() * 1000 / CLOCKS_PER_SEC;
 	cooldowntimer = clock() * 1000 / CLOCKS_PER_SEC;
+	lastUpdate = clock() * 1000 / CLOCKS_PER_SEC; // for displaying the time
 	gametime = START_TIME * 1000;
 
-	readImages(&images);
-	initGamefield(gamefield, &images);
+	
+	initGamefield(gamefield, &images, bombs, clocks, moles, clockbombs);
 
 	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
-	showScore(molesHit);
+	showScore(Score);
 
 	for (int i = 0; i < MAX_MOLES; i++)
 	{
@@ -101,7 +107,7 @@ void main()
 
 	while (gametime > 0)
 	{
-		ShowTime(startingtime, gametime);
+		ShowTime(startingtime, gametime, lastUpdate);
 		updateTimers(gamefield, &images, bombs, clocks, moles, clockbombs, cooldowntimer);
 
 		if (ismouseclick(WM_LBUTTONDOWN))
@@ -118,9 +124,9 @@ void main()
 
 				if (HitMole(gamefield , row, col))
 				{
-					molesHit++;
+					Score++;
 					showImage(images.hole, row, col);
-					showScore(molesHit);
+					showScore(Score);
 					placeMole(gamefield, &images, -1, -1, moles, clocks, bombs, clockbombs);
 				}
 
@@ -138,9 +144,9 @@ void main()
 				
 				if (HitBomb(gamefield, row, col))
 				{
-					molesHit -= 10;
+					Score -= 10;
 					showImage(images.hole, row, col);
-					showScore(molesHit);
+					showScore(Score);
 				}
 			}
 		}
@@ -148,7 +154,7 @@ void main()
 		Sleep(10);
 	}
 
-	if (restart(molesHit, images.restartbtn))
+	if (restart(Score, images.restartbtn))
 	{
 		goto start;
 	}
@@ -263,7 +269,7 @@ void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT 
 	{
 		genbomb = rand() % 2;
 		genclock = rand() % 20;
-		genclockbomb = rand() % 40;
+		genclockbomb = rand() % 2;
 
 		if (genbomb == 1)
 		{
@@ -284,15 +290,10 @@ void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT 
 	}
 }
 
-void ShowTime(unsigned int startingtime, int& gametime)
+void ShowTime(unsigned int startingtime, int& gametime, unsigned int& lastUpdate)
 {
-	static unsigned int lastUpdate = 0;
 	unsigned int currentTime = clock() * 1000 / CLOCKS_PER_SEC;
-
-	if (lastUpdate == 0)
-	{
-		lastUpdate = currentTime;
-	}
+	
 
 	int delta = currentTime - lastUpdate;
 	lastUpdate = currentTime;
@@ -410,6 +411,9 @@ void placeClockBomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJ
 
 }
 
+
+}
+
 bool HitClockBomb(int gamefield[][SIZE], int row, int col)
 {
 	if (gamefield[row][col] == CLOCKBOMB)
@@ -469,7 +473,7 @@ bool HitClock(int gamefield[][SIZE], int row, int col)
 	return false;
 }
 
-void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT moles[], OBJEKT clocks[], OBJEKT bombs[], OBJEKT clockbombs[])
+void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT moles[], OBJEKT clocks[], OBJEKT bombs[], OBJEKT clockbombs[]) 
 {
 	int randomX;
 	int randomY;
@@ -547,7 +551,7 @@ void placeMole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT m
 	showImage(images->mole, randomY, randomX);
 }
 
-void initGamefield(int gamefield[][SIZE], IMAGES* images)
+void initGamefield(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT moles[], OBJEKT clockbombs[])
 {
 	for (int row = 0; row < SIZE; row++)
 	{
@@ -557,6 +561,11 @@ void initGamefield(int gamefield[][SIZE], IMAGES* images)
 			showImage(images->hole, row, col);
 		}
 	}
+
+	memset(bombs, 0, MAX_BOMBS * sizeof(OBJEKT));
+	memset(moles, 0, MAX_MOLES * sizeof(OBJEKT));
+	memset(clocks, 0, MAX_CLOCKS * sizeof(OBJEKT));
+	memset(clockbombs, 0, MAX_CLOCKBOMBS * sizeof(OBJEKT));
 }
 
 void showImage(unsigned char* image, int row, int col)
