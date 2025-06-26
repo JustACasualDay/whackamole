@@ -46,7 +46,7 @@ void readImages(IMAGES* images); // Bilder in den Speicher laden
 void initGamefield(int gamefield[][SIZE], IMAGES* images);
 void showImage(unsigned char* image, int row, int col);
 void showScore(int molesHit);
-void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[], OBJEKT clocks[], OBJEKT mole[]);
+void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[], OBJEKT clocks[], OBJEKT moles[]);
 void placebomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT bombs[]);
 void placeClock(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT clocks[]);
 bool HitMole(int gamefield[][SIZE] , int row, int col);
@@ -71,7 +71,7 @@ void main()
 	int molesHit = 0;
 	OBJEKT bombs[MAX_BOMBS] = { 0 };
 	OBJEKT clocks[MAX_CLOCKS] = { 0 };
-	OBJEKT mole;
+	OBJEKT moles[MAX_MOLES] = { 0 };
 	unsigned int startingtime;
 	int gametime;
 
@@ -85,11 +85,15 @@ void main()
 	settextstyle(BOLD_FONT, HORIZ_DIR, 0);
 	showScore(molesHit);
 
-	placemole(gamefield, &images, 0, 0, bombs, clocks, &mole);
+	for (int i = 0; i < MAX_MOLES; i++)
+	{
+		placemole(gamefield, &images, 0, 0, bombs, clocks, moles);
+	}
+
 	while (gametime > 0)
 	{
 		ShowTime(startingtime, gametime);
-		updateTimers(gamefield, &images, bombs, clocks, &mole);
+		updateTimers(gamefield, &images, bombs, clocks, moles);
 
 		if (ismouseclick(WM_LBUTTONDOWN))
 		{
@@ -108,7 +112,7 @@ void main()
 					molesHit++;
 					showImage(images.hole, row, col);
 					showScore(molesHit);
-					placemole(gamefield, &images, row, col, bombs, clocks, &mole);
+					placemole(gamefield, &images, row, col, bombs, clocks, moles);
 				}
 
 				if (HitClock(gamefield, row, col))
@@ -180,18 +184,26 @@ void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT 
 	int row;
 	int col;
 
+
 	// Moles
-	if (currenttime - mole->time > MOLE_TIME * 1000)
+	for (int i = 0; i < MAX_MOLES; i++)
 	{
-		row = mole->coordinaten.Y;
-		col = mole->coordinaten.X;
+		if (moles[i].time != 0)
+		{
+			if (currenttime - moles[i].time > MOLE_TIME * 1000)
+			{
+				bombs[i].time = 0;
 
-		showImage(images->hole, row, col);
-		gamefield[row][col] = EMPTY;
+				row = moles[i].coordinaten.Y;
+				col = moles[i].coordinaten.X;
 
-		placemole(gamefield, images, row, col, bombs, clocks, mole);
+				showImage(images->hole, row, col);
+				gamefield[row][col] = EMPTY;
+
+				placemole(gamefield, images, row, col, bombs, clocks, moles);
+			}
+		}
 	}
-
 
 	// Bombs
 	for (int i = 0; i < MAX_BOMBS; i++)
@@ -227,6 +239,30 @@ void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT 
 				gamefield[row][col] = EMPTY;
 			}
 		}
+	}
+
+	int randomX;
+	int randomY;
+	int bomb;
+	int clock;
+
+	randomX = rand() % SIZE;
+	randomY = rand() % SIZE;
+
+	bomb = rand() % 100;
+	clock = rand() % 1000;
+
+	if (bomb == 3)
+	{
+		placebomb(gamefield, images, randomY, randomX, bombs);
+	}
+	
+	randomX = rand() % SIZE;
+	randomY = rand() % SIZE;
+
+	if (clock == 5)
+	{
+		placeClock(gamefield, images, randomY, randomX, clocks);
 	}
 }
 
@@ -401,21 +437,21 @@ void placemole(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJEKT b
 
 	} while (flag);
 	
-	if (randombomb == 3)
-	{
-		placebomb(gamefield, images, randomY, randomX, bombs);
-	}
-	if (randomclock == 5)
-	{
-		placeClock(gamefield, images, randomY, randomX, clocks);
-	}
+	
 
-	mole->coordinaten.X = randomX;
-	mole->coordinaten.Y = randomY;
-	mole->time = clock() * 1000 / CLOCKS_PER_SEC;
+	for (int i = 0; i < MAX_MOLES; i++)
+	{
+		if (moles[i].time == 0)
+		{
+			moles[i].coordinaten.X = randomX;
+			moles[i].coordinaten.Y = randomY;
+			moles[i].time = clock() * 1000 / CLOCKS_PER_SEC;
 
-	gamefield[randomY][randomX] = MOLE;
-	showImage(images->mole, randomY, randomX);
+			gamefield[randomY][randomX] = MOLE;
+			showImage(images->mole, randomY, randomX);
+			break;
+		}
+	}
 }
 
 void initGamefield(int gamefield[][SIZE], IMAGES* images)
