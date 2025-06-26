@@ -1,3 +1,10 @@
+/*
+* AUTHORS:
+* JustACasualDay
+* Steve6054
+*/
+
+
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
@@ -15,7 +22,7 @@
 #define TILE_SIZE		100
 #define OFFSETX			(WINDOW_WIDTH - (SIZE * TILE_SIZE)) / 2
 #define OFFSETY			(WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
-#define START_TIME		10
+#define START_TIME		60
 #define MOLE_TIME		1
 #define CLOCK_TIME		1
 #define BOMB_TIME		3
