@@ -129,8 +129,6 @@ void main()
 		Sleep(10);
 	}
 
-	
-
 	if (restart(molesHit, images.restartbtn))
 	{
 		goto start;
