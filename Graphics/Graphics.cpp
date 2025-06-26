@@ -1,3 +1,10 @@
+/*
+* AUTHORS:
+* JustACasualDay
+* Steve6054
+*/
+
+
 #include <stdio.h>
 #include <conio.h>
 #include <time.h>
@@ -18,6 +25,7 @@
 #define START_TIME		60
 #define MOLE_TIME		1
 #define CLOCK_TIME		1
+#define CLOCKBOMB_TIME	3
 #define BOMB_TIME		3
 
 #define CLOCK			2
@@ -265,6 +273,24 @@ void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT 
 		}
 	}
 
+	// ClockBombs
+	for (int i = 0; i < MAX_CLOCKBOMBS; i++)
+	{
+		if (clockbombs[i].time != 0)
+		{
+			if (currenttime - clockbombs[i].time >= CLOCKBOMB_TIME * 1000)
+			{
+				clockbombs[i].time = 0;
+
+				row = clockbombs[i].coordinaten.Y;
+				col = clockbombs[i].coordinaten.X;
+
+				showImage(images->hole, row, col);
+				gamefield[row][col] = EMPTY;
+			}
+		}
+	}
+
 	if (currenttime - cooldowntimer > COOLDOWN)
 	{
 		genbomb = rand() % 2;
@@ -408,8 +434,6 @@ void placeClockBomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJ
 		}
 	}
 
-
-}
 
 bool HitClockBomb(int gamefield[][SIZE], int row, int col)
 {
