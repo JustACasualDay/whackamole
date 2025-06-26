@@ -24,7 +24,7 @@ Whack A Mole is a classic arcade-style game where players try to whack randomly 
 
 1. Run the game executable.  
 2. Click on the mole as it appears on the screen to score points.  
-3. Try to whack as many moles as you can before time runs out (or within the given rounds).  
+3. Try to whack as many moles as you can before time runs out.  
 
 ---
 
