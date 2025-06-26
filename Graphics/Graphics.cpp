@@ -67,6 +67,7 @@ bool HitBomb(int gamefield[][SIZE], int row, int col);
 bool HitClock(int gamefield[][SIZE], int row, int col);
 bool HitClockBomb(int gamefield[][SIZE], int row, int col);
 void ShowTime(unsigned int startingtime, int& gametime, unsigned int& lastUpdate);
+bool HitClockBomb(int gamefield[][SIZE], int row, int col);
 void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT clocks[], OBJEKT moles[], OBJEKT clockbombs[], unsigned int& cooldowntimer);
 bool restart(int molesHit, unsigned char* image);
 
@@ -416,6 +417,7 @@ void placeClockBomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJ
 
 
 }
+
 
 bool HitClockBomb(int gamefield[][SIZE], int row, int col)
 {
