@@ -67,8 +67,6 @@ void main()
 	window = initwindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Whack-A-Mole");
 	setcurrentwindow(window);
 
-	
-	
 	int gamefield[SIZE][SIZE];
 	int mouseX;
 	int mouseY;
