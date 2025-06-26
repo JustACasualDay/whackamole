@@ -15,7 +15,7 @@
 #define TILE_SIZE		100
 #define OFFSETX			(WINDOW_WIDTH - (SIZE * TILE_SIZE)) / 2
 #define OFFSETY			(WINDOW_HEIGHT - (SIZE * TILE_SIZE)) / 2
-#define START_TIME		10
+#define START_TIME		60
 #define MOLE_TIME		1
 #define CLOCK_TIME		1
 #define BOMB_TIME		3
@@ -269,7 +269,7 @@ void updateTimers(int gamefield[][SIZE], IMAGES* images, OBJEKT bombs[], OBJEKT 
 	{
 		genbomb = rand() % 2;
 		genclock = rand() % 20;
-		genclockbomb = rand() % 2;
+		genclockbomb = rand() % 40;
 
 		if (genbomb == 1)
 		{
@@ -407,9 +407,6 @@ void placeClockBomb(int gamefield[][SIZE], IMAGES* images, int row, int col, OBJ
 			break;
 		}
 	}
-
-
-}
 
 
 }
